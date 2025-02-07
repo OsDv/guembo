@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="EN-us">
+<head>
+    <meta charset="utf-8">
+    <title>GUEMBO</title>
+    <meta name="viewport" content="width=device-width">
+    <link href="https://www.raylib.com/favicon.ico" rel="shortcut icon">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+        canvas.emscripten {
+            border: 0 none;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+    <script>
+        var Module = {
+            print: function() {
+                var e = document.getElementById("output");
+                return e && (e.value = ""),
+                function(n) {
+                    arguments.length > 1 && (n = Array.prototype.slice.call(arguments).join(" ")),
+                    console.log(n),
+                    e && (e.value += n + "\n", e.scrollTop = e.scrollHeight);
+                }
+            }(),
+            canvas: document.getElementById("canvas")
+        };
+    </script>
+    <script src="game.js" async></script>
+</body>
+</html>
