@@ -15,9 +15,19 @@
             border: 0 none;
             background-color: #000;
         }
+        #fullscreen-checkbox {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            color: white;
+        }
     </style>
 </head>
 <body>
+    <label id="fullscreen-checkbox">
+        <input type="checkbox" id="fullscreen-toggle"> Fullscreen
+    </label>
     <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
     <script>
         var Module = {
@@ -32,6 +42,69 @@
             }(),
             canvas: document.getElementById("canvas")
         };
+
+        // Fullscreen toggle functionality
+        document.getElementById('fullscreen-toggle').addEventListener('change', function() {
+            if (this.checked) {
+                enterFullscreen();
+            } else {
+                exitFullscreen();
+            }
+        });
+
+        function enterFullscreen() {
+            var canvas = document.getElementById('canvas');
+            if (canvas.requestFullscreen) {
+                canvas.requestFullscreen();
+            } else if (canvas.mozRequestFullScreen) { // Firefox
+                canvas.mozRequestFullScreen();
+            } else if (canvas.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                canvas.webkitRequestFullscreen();
+            } else if (canvas.msRequestFullscreen) { // IE/Edge
+                canvas.msRequestFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+
+        // Handle fullscreen change event
+        document.addEventListener('fullscreenchange', function() {
+            var checkbox = document.getElementById('fullscreen-toggle');
+            if (!document.fullscreenElement) {
+                checkbox.checked = false;
+            }
+        });
+
+        document.addEventListener('mozfullscreenchange', function() {
+            var checkbox = document.getElementById('fullscreen-toggle');
+            if (!document.mozFullScreenElement) {
+                checkbox.checked = false;
+            }
+        });
+
+        document.addEventListener('webkitfullscreenchange', function() {
+            var checkbox = document.getElementById('fullscreen-toggle');
+            if (!document.webkitFullscreenElement) {
+                checkbox.checked = false;
+            }
+        });
+
+        document.addEventListener('msfullscreenchange', function() {
+            var checkbox = document.getElementById('fullscreen-toggle');
+            if (!document.msFullscreenElement) {
+                checkbox.checked = false;
+            }
+        });
     </script>
     <script src="game.js" async></script>
 </body>
